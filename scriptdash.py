@@ -65,13 +65,8 @@ def create_app():
                 return fig
 
     @app.callback(Output('daily-report', 'children'), Input('daily-report-update', 'n_intervals'))
-    def update_daily_report(n):
-                if now.hour == 18 and now.minute == 0:
-                    with open("timeseries.txt", "r") as source_file:
-                        content = source_file.read()
-                    with open("dailysave.txt", "w") as destination_file:
-                        destination_file.write(content)    #le daily report est généré à partir d'une sauvegarde (dailysave.txt)
-                df = load_data('dailysave.txt')            #la sauvegarde est écrasée tous les jours à 18h UTC (20h heure de Paris)
+    def update_daily_report(n):                            #le daily report est généré à partir d'une sauvegarde (dailysave.txt)
+                df = load_data('dailysave.txt')            #la sauvegarde est écrasée tous les jours à 18h UTC via le crontab (20h heure de Paris)
                 return daily_report(df)
 
 
